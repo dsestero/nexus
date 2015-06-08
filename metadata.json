@@ -21,7 +21,7 @@
   "issues_url": "https://github.com/dsestero/nexus/issues",
   "source": "https://github.com/dsestero/nexus.git",
   "requirements": [{"name": "puppet", "version_requirement": "3.x"}],
-  "summary": "This Puppet module manages Nexus (http://www.sonatype.org/nexus/)",
+  "summary": "This Puppet module manages Nexus OSS Maven repository (http://www.sonatype.org/nexus/)",
   "tags": ["nexus-oss", "maven"],
   "version": "1.0.0"
 }
