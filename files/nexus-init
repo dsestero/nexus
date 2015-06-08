@@ -1,0 +1,71 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          nexus
+# Required-Start:    $local_fs 
+# Required-Stop:     $local_fs 
+# Default-Start:     2 3 4 5
+# Default-Stop:      S 0 1 6
+# Short-Description: startup for nexus
+# Description:       start run script for nexus
+#                    placed in /etc/init.d.
+### END INIT INFO
+
+NAME=$(basename $0)
+DESC="Nexus OSS"
+RUNUSER=nexus
+RUNGRP=nogroup
+RUNAS="${RUNUSER}:${RUNGRP}"
+PIDDIR=/var/run/nexus
+PIDFILE=$PIDDIR/nexus_os.pid
+DAEMON=/opt/nexus/bin/nexus
+
+[ -x "$DAEMON" ] || exit 0
+
+[ -r /etc/default/$SERVICE ] && . /etc/default/$SERVICE
+
+[ -f /etc/default/rcS ] && . /etc/default/rcS
+VERBOSE=yes
+
+. /lib/lsb/init-functions
+
+do_start()
+{
+  #Create subdirectory of /var/run for pids, with proper permissions
+  mkdir -p $PIDDIR
+  chown $RUNAS $PIDDIR
+  
+  #Return 0 if daemon has been started 1 if already running 2 if could not be started
+  start-stop-daemon --start --quiet --chuid $RUNAS --pidfile $PIDFILE --exec $DAEMON start --test > /dev/null || return 1
+  start-stop-daemon --start --quiet --chuid $RUNAS --pidfile $PIDFILE --exec $DAEMON start || return 2
+}
+
+do_stop()
+{
+  # Return 0 if daemon has been stopped 1 if already stopped 2 if could not be stopped
+        su - $RUNUSER -s /bin/bash -c "$DAEMON stop" 
+        RETVAL="$?"
+        return "$RETVAL"
+}
+
+case "$1" in
+  start)
+        [ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
+        do_start
+        case "$?" in
+                0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+                2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+        esac
+        ;;
+  stop)
+        [ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
+        do_stop
+        case "$?" in
+                0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+                2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+        esac
+        ;;
+  *)
+        echo "Usage: $NAME {start|stop}" >&2
+        exit 3
+        ;;
+esac

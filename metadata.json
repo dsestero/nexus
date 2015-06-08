@@ -1,0 +1,27 @@
+{
+  "author": "Dario Sestero",
+  "name": "dsestero-nexus",
+  "dependencies": [    {
+      "name": "dsestero/download_uncompress",
+      "version_requirement": "1.x"
+    },
+    {
+      "name": "dsestero/java",
+      "version_requirement": "1.x"
+    }
+  ],
+  "license": "Apache-2.0",
+  "operatingsystem_support": [
+      {
+          "operatingsystem": "Ubuntu",
+          "operatingsystemrelease": ["12.04"]
+      }
+  ],
+  "project_page": "https://github.com/dsestero/nexus",
+  "issues_url": "https://github.com/dsestero/nexus/issues",
+  "source": "https://github.com/dsestero/nexus.git",
+  "requirements": [{"name": "puppet", "version_requirement": "3.x"}],
+  "summary": "This Puppet module manages Nexus (http://www.sonatype.org/nexus/)",
+  "tags": ["nexus-oss", "maven"],
+  "version": "1.0.0"
+}
