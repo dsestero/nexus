@@ -25,7 +25,7 @@ class nexus::install ($nexus_bundle, $nexus_package, $storage_loc) {
   if $nexus_package == undef {
     $nexus_splitted = split($nexus_bundle, '-')
 
-    $nexus_package = $nexus_splitted[2] ? {
+    $nexus_pkg = $nexus_splitted[2] ? {
       'bundle.tar.gz' => "${nexus_splitted[0]}-${nexus_splitted[1]}",
       default         => "${nexus_splitted[0]}-${nexus_splitted[1]}-${nexus_splitted[2]}",
     }
@@ -48,7 +48,7 @@ class nexus::install ($nexus_bundle, $nexus_package, $storage_loc) {
 
   file { '/opt/nexus':
     ensure => link,
-    target => "/opt/${nexus_package}",
+    target => "/opt/${nexus_pkg}",
     owner  => root,
     group  => root,
   }
@@ -56,7 +56,7 @@ class nexus::install ($nexus_bundle, $nexus_package, $storage_loc) {
   download_uncompress { 'install_nexus':
     distribution_name => $nexus_bundle,
     dest_folder       => '/opt',
-    creates           => "/opt/${nexus_package}",
+    creates           => "/opt/${nexus_pkg}",
     uncompress        => 'tar.gz',
     user              => root,
     group             => root,
