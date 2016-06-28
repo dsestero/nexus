@@ -25,10 +25,9 @@ class nexus::install ($nexus_bundle, $nexus_package, $storage_loc) {
   if $nexus_package == undef {
     $nexus_splitted = split($nexus_bundle, '-')
 
-    if $nexus_splitted[2] == 'bundle.tar.gz' {
-      $nexus_package = "${nexus_splitted[0]}-${nexus_splitted[1]}"
-    } else {
-      $nexus_package = "${nexus_splitted[0]}-${nexus_splitted[1]}-${nexus_splitted[2]}"
+    $nexus_package = $nexus_splitted[2] ? {
+      'bundle.tar.gz' => "${nexus_splitted[0]}-${nexus_splitted[1]}",
+      default         => "${nexus_splitted[0]}-${nexus_splitted[1]}-${nexus_splitted[2]}",
     }
   }
 
